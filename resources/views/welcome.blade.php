@@ -41,6 +41,16 @@
                 margin: -20px -25px 10px;
                 border-radius: 3px 3px 0 0;
             }
+ 
+.table-wrapper {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 10px; /* Add rounded corners here */
+    min-width: 1000px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    overflow: hidden; /* Ensures table doesn't overflow outside corners */
+}
+
 
             .table-title h2 {
                 margin: 5px 0 0;
@@ -284,6 +294,7 @@
             .modal form label {
                 font-weight: normal;
             }
+        
         </style>
        
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -316,8 +327,8 @@
                         </div>
                     </div>
                     <div class="p-4 bg-white rounded shadow overflow-hidden">
-                        <table class="table table-striped table-hover mb-0">
-                            <thead class="bg-primary text-white">
+                        <table class="table table-striped table-hover mb-0 table-wrapper">
+                            <thead class="bg-primary text-white" >
                                 <tr>
                                     <th>Name</th>
                                     <th>Mobile</th>
