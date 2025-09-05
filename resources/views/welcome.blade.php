@@ -425,11 +425,12 @@
                             <h5 class="modal-title text-white">
                                 <i class="bi bi-person-lines-fill me-2"></i> Create New Account
                             </h5>
-                           <button type="button" class="btn shadow-none" data-bs-dismiss="modal" aria-label="Close" style="background:none; border:none;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                           <button type="button" class="btn shadow-none text-white" data-dismiss="modal" aria-label="Close" style="background:none; border:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                         </svg>
                         </button>
+
 
                         </div>
 
@@ -567,7 +568,12 @@
           <h5 class="modal-title text-white" id="editEmployeeModalLabel">
             <i class="bi bi-person-lines-fill me-2"></i> Update Team Details
           </h5>
-          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn shadow-none text-white" data-dismiss="modal" aria-label="Close" style="background: none; border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+          </button>
+
         </div>
 
         <div class="modal-body">
