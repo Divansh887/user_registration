@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
 
-        $all_users = Users::get();
+        $all_users = Users::paginate(5);
 
         return view('welcome',[
             'all_users'=>$all_users
@@ -68,8 +68,7 @@ public function store(Request $request)
             'datetime' => date('Y-m-d H:i:s'),
         ];
 
-        // dd($my_arr);
-              $insert = Users::insert($my_arr);
+        $insert = Users::insert($my_arr);
 
        if($insert){
         
@@ -85,6 +84,7 @@ public function store(Request $request)
     }
     catch(\Exception $ex)
         {
+            dd($ex->getMessage());
             DB::rollback();
             Session::flash('error', 'Error updating user: ' . $ex->getMessage());
             return redirect('user_registration');
@@ -175,8 +175,12 @@ public function store(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        
-    }
+    public function destroy($id)
+{
+    $user = Users::findOrFail($id);
+    $user->delete();
+
+    return response()->json(['success' => true]);
+}
+
 }

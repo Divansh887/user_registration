@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -285,31 +287,9 @@
                 font-weight: normal;
             }
         </style>
-        <script>
-            $(document).ready(function() {
-                // Activate tooltip
-                $('[data-toggle="tooltip"]').tooltip();
+       
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                // Select/Deselect checkboxes
-                var checkbox = $('table tbody input[type="checkbox"]');
-                $("#selectAll").click(function() {
-                    if (this.checked) {
-                        checkbox.each(function() {
-                            this.checked = true;
-                        });
-                    } else {
-                        checkbox.each(function() {
-                            this.checked = false;
-                        });
-                    }
-                });
-                checkbox.click(function() {
-                    if (!this.checked) {
-                        $("#selectAll").prop("checked", false);
-                    }
-                });
-            });
-        </script>
     </head>
 
     <body>
@@ -353,7 +333,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($all_users as $data)
-                                    <tr>
+                                    <tr id="user-row-{{ $data->id }}">
                                         <td>{{ $data->Name }}</td>
                                         <td>{{ $data->Mobile }}</td>
                                         <td>{{ $data->Email }}</td>
@@ -365,8 +345,8 @@
                                         </td>
 
                                         @php
-                                        $statusColor = $data->Status == 0 ? '#f8d7da' : '#6dde88';
-                                    @endphp
+                                            $statusColor = $data->Status == 0 ? '#f8d7da' : '#6dde88';
+                                        @endphp
                                         <td class="text-center align-middle">
                                             <button class="btn btn-sm"
                                                 style="border-radius: 5px; background-color: {{ $statusColor }};">
@@ -399,7 +379,8 @@
                                                 </a>
 
                                                 <a href="#deleteEmployeeModal" class="btn btn-sm text-white ms-2"
-                                                    onclick="delete_user({{ $data->id }})" data-toggle="modal"
+                                                    onclick="confirmAndDeleteUser({{ $data->id }})"
+                                                    data-toggle="modal"
                                                     style="background-color: #e6838d; border-radius: 5px;"
                                                     title="Delete">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -420,14 +401,17 @@
                     </div>
 
 
-                    <div class="clearfix">
-                        <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a href="#">Previous</a></li>
-                            <li class="page-item"><a href="#" class="page-link">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                        </ul>
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3">
+                        <div class="text-muted mb-2 mb-md-0">
+                            Showing <b>{{ $all_users->firstItem() }}</b> to <b>{{ $all_users->lastItem() }}</b> of
+                            <b>{{ $all_users->total() }}</b> entries
+                        </div>
+                        <div>
+                            {{ $all_users->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -443,8 +427,9 @@
                             <h5 class="modal-title text-white">
                                 <i class="bi bi-person-lines-fill me-2"></i> Create New Account
                             </h5>
-                            <button type="button" class="btn-close btn-close-white shadow-none"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
+                           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
                         </div>
 
                         <div class="modal-body">
@@ -509,8 +494,7 @@
 
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Status </label>
-                                        <select name="Status" id="status" class="form-control shadow-none"
-                                            >
+                                        <select name="Status" id="status" class="form-control shadow-none">
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
@@ -559,7 +543,7 @@
 
     </body>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function edit_user(id) {
             $.ajax({
@@ -674,13 +658,10 @@
   </div>
 </div>`;
 
-                    // Remove existing modal if present
                     $('#editEmployeeModal').remove();
 
-                    // Append modal to body
                     $('body').append(modalHtml);
 
-                    // Show the modal using Bootstrap 5 JS API
                     var editModal = new bootstrap.Modal(document.getElementById('editEmployeeModal'), {
                         backdrop: 'static',
                         keyboard: false
@@ -690,6 +671,52 @@
                 error: function(xhr, status, error) {
                     console.log('AJAX error:', error);
                     alert('Failed to load user data.');
+                }
+            });
+        }
+
+        function confirmAndDeleteUser(id) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this record?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e6838d',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Delete',
+                reverseButtons: true,
+                width: '600px',
+                background: '#fff5f6',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `user_registration/${id}`,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'User deleted successfully',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                background: '#e6838d',
+                                color: '#fff'
+                            });
+
+                            $(`#user-row-${id}`).remove();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Failed to delete the user. Please try again.'
+                            });
+                            console.error('Delete error:', error);
+                        }
+                    });
                 }
             });
         }
