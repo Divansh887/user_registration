@@ -12,6 +12,6 @@ class Users extends Model
      protected $fillable = [
         'Name', 'Mobile', 'Email', 'Address', 'Role',
         'Designation', 'Marital_Status', 'DOB', 'Gender',
-        'Photo_Path', 'Status'
+        'Photo_Path', 'Status','datetime'
     ];
 }

@@ -352,47 +352,73 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>Name</td>
-                                <td>Mobile</td>
-                                <td>Email</td>
-                                <td>Role</td>
-                                <td>Designation</td>
-                                <td>Photo</td>
-                                <td>Status</td>
-                                <td class="align-middle display-flex">
-                                    <a href="#editEmployeeModal" class="btn btn-sm text-white mr-2" data-toggle="modal"
-                                        style="background-color: #28a745; border-radius: 5px;" title="Edit">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793
-        14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646
-        6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5
-        0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1
-        .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6
-        13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5
-        0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5
-        0 0 1-.175-.032l-.179.178a.5.5 0 0
-        0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5
-        0 0 0 .168-.11z" />
-                                        </svg>
-                                    </a>
+                                @foreach ($all_users as $data)
+                                    <tr>
+                                        <td>{{ $data->Name }}</td>
+                                        <td>{{ $data->Mobile }}</td>
+                                        <td>{{ $data->Email }}</td>
+                                        <td>{{ $data->Role }}</td>
+                                        <td>{{ $data->Designation }}</td>
+                                        <td>
+                                            <img src="{{ asset($data->Photo_Path) }}" alt="photo" width="50"
+                                                height="50" class="rounded-circle">
+                                        </td>
 
-                                    <a href="#deleteEmployeeModal" class="btn btn-sm text-white" data-toggle="modal"
-                                        style="background-color: #dc3545; border-radius: 5px;" title="Delete">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                            <path d="M2.5 1a1 1 0 0 0-1 1V2h13v-.5a1
-        1 0 0 0-1-1h-11zM5.5 5a.5.5 0 0 1 1
-        0v6a.5.5 0 0 1-1 0V5zm4 0a.5.5 0 0
-        1 1 0v6a.5.5 0 0 1-1 0V5z" />
-                                        </svg>
-                                    </a>
-                                </td>
+                                        @php
+                                        $statusColor = $data->Status == 0 ? '#f8d7da' : '#6dde88';
+                                    @endphp
+                                        <td class="text-center align-middle">
+                                            <button class="btn btn-sm"
+                                                style="border-radius: 5px; background-color: {{ $statusColor }};">
+                                                {{ $data->Status == 0 ? 'Inactive' : 'Active' }}
+                                            </button>
+                                            <div class="mt-1 text-muted" style="font-size: 12px;">
+                                                {{ date('d/m/Y H:i:s', strtotime($data->datetime)) }}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="d-flex gap-3">
+                                                <a href="#editEmployeeModal" class="btn btn-sm text-white"
+                                                    onclick="edit_user({{ $data->id }})" data-toggle="modal"
+                                                    style="background-color: #8aeea1; border-radius: 5px;"
+                                                    title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor" class="bi bi-pencil-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793
+                                        14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646
+                                        6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5
+                                        0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1
+                                        .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6
+                                        13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5
+                                        0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5
+                                        0 0 1-.175-.032l-.179.178a.5.5 0 0
+                                        0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5
+                                        0 0 0 .168-.11z" />
+                                                    </svg>
+                                                </a>
 
-                                </tr>
+                                                <a href="#deleteEmployeeModal" class="btn btn-sm text-white ms-2"
+                                                    onclick="delete_user({{ $data->id }})" data-toggle="modal"
+                                                    style="background-color: #e6838d; border-radius: 5px;"
+                                                    title="Delete">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="currentColor" class="bi bi-trash-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path d="M2.5 1a1 1 0 0 0-1 1V2h13v-.5a1
+                                        1 0 0 0-1-1h-11zM5.5 5a.5.5 0 0 1 1
+                                        0v6a.5.5 0 0 1-1 0V5zm4 0a.5.5 0 0
+                                        1 1 0v6a.5.5 0 0 1-1 0V5z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+
 
                     <div class="clearfix">
                         <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
@@ -417,8 +443,8 @@
                             <h5 class="modal-title text-white">
                                 <i class="bi bi-person-lines-fill me-2"></i> Create New Account
                             </h5>
-                            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white shadow-none"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
@@ -482,9 +508,9 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                                        <label class="form-label">Status </label>
                                         <select name="Status" id="status" class="form-control shadow-none"
-                                            required>
+                                            >
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
@@ -502,7 +528,7 @@
                                                 id="married" value="M" required>
                                             <label class="form-check-label" for="married">Married</label>
                                         </div>
-                                      
+
                                     </div>
 
 
@@ -524,63 +550,149 @@
             </div>
         </div>
 
-        <div id="editEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h4 class="modal-title">Edit Employee</h4>
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <textarea class="form-control" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="text" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-info" value="Save">
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="modal fade" id="editEmployeeModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
         </div>
-        <!-- Delete Modal HTML -->
-        <div id="deleteEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete Employee</h4>
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete these Records?</p>
-                            <p class="text-warning"><small>This action cannot be undone.</small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-danger" value="Delete">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
+
+
     </body>
+
+
+    <script>
+        function edit_user(id) {
+            $.ajax({
+                url: 'user_registration/${id}/edit',
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    var user = data.user;
+                    const csrfToken = '{{ csrf_token() }}';
+                    const routeBase = "{{ url('user_registration') }}";
+                    let modalHtml = `
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="editUserForm" action="${routeBase}/${user.id}" method="POST" enctype="multipart/form-data">
+       <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="_token" value="${csrfToken}">  <div class="modal-header" style="background-color: #3c37d5">
+          <h5 class="modal-title text-white" id="editEmployeeModalLabel">
+            <i class="bi bi-person-lines-fill me-2"></i> Update Team Details
+          </h5>
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control shadow-none" name="Name" placeholder="ENTER FULL NAME" required value="${user.Name || ''}">
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Mobile No. <span class="text-danger">*</span></label>
+                <input type="tel" maxlength="10" minlength="10" class="form-control shadow-none" name="Mobile" placeholder="Enter Mobile No." required value="${user.Mobile || ''}">
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Email Id <span class="text-danger">*</span></label>
+                <input type="email" class="form-control shadow-none" name="Email" placeholder="Enter Email Id" required value="${user.Email || ''}">
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control shadow-none" name="Address" placeholder="Enter Address" required value="${user.Address || ''}">
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Role <span class="text-danger">*</span></label>
+                <select name="Role" class="form-control shadow-none" required>
+                  <option value="">Select Role</option>
+                  <option value="Developer" ${user.Role === 'Developer' ? 'selected' : ''}>Developer</option>
+                  <option value="Tester" ${user.Role === 'Tester' ? 'selected' : ''}>Tester</option>
+                </select>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Designation <span class="text-danger">*</span></label>
+                <input type="text" class="form-control shadow-none" name="Designation" placeholder="Enter Designation" required value="${user.Designation || ''}">
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Gender <span class="text-danger">*</span></label>
+                <select name="Gender" class="form-control shadow-none" required>
+                  <option value="M" ${user.Gender === 'M' ? 'selected' : ''}>Male</option>
+                  <option value="F" ${user.Gender === 'F' ? 'selected' : ''}>Female</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Upload Logo</label>
+                <input type="file" class="form-control shadow-none" name="logo">
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Status </label>
+                <select name="Status" class="form-control shadow-none" >
+                  <option value="1" ${user.Status == 1 ? 'selected' : ''}>Active</option>
+                  <option value="0" ${user.Status == 0 ? 'selected' : ''}>Inactive</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label d-block">Marital Status <span class="text-danger">*</span></label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="Marital_Status" id="single" value="S" ${user.Marital_Status === 'S' ? 'checked' : ''} required>
+                  <label class="form-check-label" for="single">Single</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="Marital_Status" id="married" value="M" ${user.Marital_Status === 'M' ? 'checked' : ''} required>
+                  <label class="form-check-label" for="married">Married</label>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                <input type="date" class="form-control shadow-none" name="DOB" required value="${user.DOB || ''}">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark shadow-none ms-3 me-auto">Update </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>`;
+
+                    // Remove existing modal if present
+                    $('#editEmployeeModal').remove();
+
+                    // Append modal to body
+                    $('body').append(modalHtml);
+
+                    // Show the modal using Bootstrap 5 JS API
+                    var editModal = new bootstrap.Modal(document.getElementById('editEmployeeModal'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    editModal.show();
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX error:', error);
+                    alert('Failed to load user data.');
+                }
+            });
+        }
+    </script>
 
 </html>
