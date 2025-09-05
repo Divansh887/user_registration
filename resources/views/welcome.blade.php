@@ -48,7 +48,7 @@
             .table-overlap {
                 position: relative;
                 z-index: 2;
-                margin-top: -30px;
+                margin-top: -20px;
             }
 
             .table-wrapper {
@@ -318,6 +318,7 @@
                             <div class="col-sm-6">
                                 <h2> <b>Team</b></h2> <br>
                                 <span> <b> Dashbord</b> / <span style="color: grey"> All Team</span></span>
+                                <br>
 
                             </div>
                             <div class="col-sm-6 mt-3">
@@ -707,7 +708,6 @@
         function confirmAndDeleteUser(id) {
             Swal.fire({
                 title: 'Are you sure you want to delete this record?',
-                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e6838d',
                 cancelButtonColor: '#6c757d',

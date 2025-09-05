@@ -142,7 +142,7 @@ public function store(Request $request)
             'Status' => $request->Status,
             'Marital_Status' => $request->Marital_Status,
             'DOB' => $request->DOB,
-            'datetime' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($request->hasFile('logo')) {
