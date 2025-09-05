@@ -32,24 +32,33 @@
                 box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
             }
 
+
             .table-title {
-                padding-bottom: 15px;
+                padding-bottom: 30px;
                 background: #3c37d5;
                 color: #fff;
                 padding: 16px 30px;
                 min-width: 100%;
                 margin: -20px -25px 10px;
                 border-radius: 3px 3px 0 0;
+                position: relative;
+                z-index: 1;
             }
- 
-.table-wrapper {
-    background: #fff;
-    padding: 20px 25px;
-    border-radius: 10px; /* Add rounded corners here */
-    min-width: 1000px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    overflow: hidden; /* Ensures table doesn't overflow outside corners */
-}
+
+            .table-overlap {
+                position: relative;
+                z-index: 2;
+                margin-top: -30px;
+            }
+
+            .table-wrapper {
+                background: #fff;
+                padding: 20px 25px;
+                border-radius: 10px;
+                min-width: 1000px;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+                overflow: hidden;
+            }
 
 
             .table-title h2 {
@@ -294,9 +303,8 @@
             .modal form label {
                 font-weight: normal;
             }
-        
         </style>
-       
+
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
     </head>
@@ -326,9 +334,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 bg-white rounded shadow overflow-hidden">
+                    <div class="p-4 bg-white rounded shadow overflow-hidden table-overlap">
                         <table class="table table-striped table-hover mb-0 table-wrapper">
-                            <thead class="bg-primary text-white" >
+                            <thead class="bg-primary text-white">
                                 <tr>
                                     <th>Name</th>
                                     <th>Mobile</th>
@@ -410,7 +418,7 @@
                     </div>
 
 
-                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3">
                         <div class="text-muted mb-2 mb-md-0">
                             Showing <b>{{ $all_users->firstItem() }}</b> to <b>{{ $all_users->lastItem() }}</b> of
                             <b>{{ $all_users->total() }}</b> entries
@@ -436,11 +444,14 @@
                             <h5 class="modal-title text-white">
                                 <i class="bi bi-person-lines-fill me-2"></i> Create New Account
                             </h5>
-                           <button type="button" class="btn shadow-none text-white" data-dismiss="modal" aria-label="Close" style="background:none; border:none;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
-                        </button>
+                            <button type="button" class="btn shadow-none text-white" data-dismiss="modal"
+                                aria-label="Close" style="background:none; border:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                    fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                    <path
+                                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </button>
 
 
                         </div>
